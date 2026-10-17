@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>غرفة الهروب التاريخية — أسرار العصر الفرعوني</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sand: #e7d3a1;
+      --sand-deep: #c4a15a;
+      --gold: #e8b84a;
+      --gold-bright: #f6d98a;
+      --ink: #1c140c;
+      --night: #140e09;
+      --stone: #2a2118;
+      --stone-2: #3a2e22;
+      --papyrus: #f6edd6;
+      --papyrus-ink: #3a2a16;
+      --ok: #2f8f5b;
+      --bad: #c44536;
+      --line: rgba(232, 184, 74, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+      color: var(--sand);
+      background:
+        radial-gradient(ellipse at top, #3d2a16 0%, transparent 55%),
+        linear-gradient(180deg, #1a120c 0%, #0d0906 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(232, 184, 74, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232, 184, 74, 0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    }
+
+    .wrap {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+      position: relative;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .kicker {
+      letter-spacing: 0.18em;
+      font-size: 13px;
+      color: var(--gold);
+      margin: 0 0 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.35;
+      color: var(--gold-bright);
+      text-shadow: 0 2px 0 #5a3d12;
+    }
+
+    .subtitle {
+      margin: 8px auto 0;
+      max-width: 640px;
+      color: #d8c39a;
+      font-size: 16px;
+    }
+
+    .gate-bar {
+      margin: 22px auto 8px;
+      background: rgba(20, 14, 9, 0.7);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px 16px;
+    }
+
+    .gate-bar .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .track {
+      height: 10px;
+      background: #3a2c1c;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .track > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #8a6420, var(--gold-bright));
+      transition: width 0.45s ease;
+    }
+
+    .story {
+      background: linear-gradient(180deg, rgba(58, 42, 24, 0.85), rgba(28, 20, 12, 0.9));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 20px;
+      margin: 18px 0 22px;
+      line-height: 1.9;
+    }
+
+    .story h2, .sheet h2, .teacher h2 {
+      margin: 0 0 8px;
+      color: var(--gold-bright);
+      font-size: 20px;
+    }
+
+    .howto {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .howto div {
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .howto strong {
+      display: block;
+      color: var(--gold);
+      margin-bottom: 2px;
+    }
+
+    .locks {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .lock {
+      background:
+        linear-gradient(180deg, rgba(255, 220, 150, 0.06), transparent 40%),
+        var(--stone);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lock.open {
+      border-color: rgba(47, 143, 91, 0.7);
+      background:
+        linear-gradient(180deg, rgba(47, 143, 91, 0.16), transparent 46%),
+        var(--stone);
+    }
+
+    .lock-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .glyph {
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .era {
+      margin: 0;
+      color: var(--gold);
+      font-size: 13px;
+    }
+
+    .lock h3 {
+      margin: 2px 0 0;
+      font-size: 22px;
+    }
+
+    .digits {
+      color: #b7a183;
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    button, .btn {
+      font-family: inherit;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .btn-gold {
+      background: linear-gradient(180deg, #f0cb6d, #c4922d);
+      color: #2a1a08;
+    }
+
+    .btn-gold:hover { filter: brightness(1.06); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--sand);
+      border: 1px solid var(--line);
+    }
+
+    .code-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      font-family: inherit;
+      font-size: 22px;
+      letter-spacing: 0.35em;
+      text-align: center;
+      border-radius: 10px;
+      border: 1px solid #6d5733;
+      background: #120e0a;
+      color: var(--gold-bright);
+      padding: 10px 8px;
+    }
+
+    input[type="text"]:focus {
+      outline: 2px solid var(--gold);
+      border-color: transparent;
+    }
+
+    .msg {
+      min-height: 22px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .msg.ok { color: #8ee0b0; }
+    .msg.bad { color: #ffb1a8; }
+
+    .shake { animation: shake 0.35s linear; }
+
+    @keyframes shake {
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-3px); }
+    }
+
+    dialog {
+      width: min(760px, calc(100% - 24px));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 0;
+      background: var(--papyrus);
+      color: var(--papyrus-ink);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    }
+
+    dialog::backdrop {
+      background: rgba(8, 5, 2, 0.72);
+    }
+
+    .sheet {
+      padding: 22px 22px 18px;
+    }
+
+    .sheet header.sheet-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .close-x {
+      background: transparent;
+      border: 0;
+      font-size: 22px;
+      cursor: pointer;
+      color: #6b5430;
+    }
+
+    .review, .quiz {
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-top: 12px;
+    }
+
+    .review h3, .quiz h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    .review ul, .quiz ol {
+      margin: 0;
+      padding-inline-start: 20px;
+      line-height: 1.85;
+    }
+
+    .quiz .hint-line {
+      margin: 10px 0 0;
+      font-weight: 700;
+      color: #7a4e12;
+    }
+
+    #victory {
+      display: none;
+      margin-top: 22px;
+      text-align: center;
+      background: linear-gradient(180deg, #3d2c12, #24180d);
+      border: 2px dashed var(--gold);
+      border-radius: 18px;
+      padding: 26px 18px;
+    }
+
+    #victory.show { display: block; }
+
+    #victory h2 {
+      margin: 0 0 8px;
+      color: var(--gold-bright);
+      font-size: 28px;
+    }
+
+    .teacher {
+      margin-top: 28px;
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+    }
+
+    .teacher summary {
+      cursor: pointer;
+      color: #b7a183;
+      font-weight: 700;
+    }
+
+    .teacher table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .teacher th, .teacher td {
+      border-bottom: 1px solid rgba(232, 184, 74, 0.2);
+      text-align: right;
+      padding: 8px 6px;
+    }
+
+    .teacher code {
+      color: var(--gold-bright);
+      font-size: 16px;
+    }
+
+    @media (max-width: 760px) {
+      .locks, .howto { grid-template-columns: 1fr; }
+      .code-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="kicker">دراسات اجتماعية · الصف الأول الإعدادي</p>
+      <h1>غرفة الهروب التاريخية</h1>
+      <p class="subtitle">أسرار العصر الفرعوني — افتح أربعة أقفال داخل المعبد، وبعدها تنفتح البوابة الرئيسية.</p>
+    </header>
+
+    <section class="gate-bar" aria-live="polite">
+      <div class="row">
+        <span>البوابة الرئيسية</span>
+        <span id="progress-label">٠ من ٤ أقفال</span>
+      </div>
+      <div class="track"><span id="progress-fill"></span></div>
+    </section>
+
+    <section class="story">
+      <h2>القصة</h2>
+      <p>
+        أثناء رحلة استكشافية داخل أحد المعابد الفرعونية القديمة بالأقصر، انغلقت البوابات فجأة بعد تفعيل نظام حماية قديم.
+        لست محاصرًا تمامًا، لكن لفتح البوابة والهروب لازم تفك رموز أربعة أقفال تحمي أسرار الحضارة المصرية القديمة.
+      </p>
+      <p>
+        كل قفل يمثل عصرًا: عصر بناة الأهرام (الدولة القديمة)، عصر الرخاء الاقتصادي (الدولة الوسطى)،
+        كفاح الشعب المصري ضد الهكسوس، وعصر المجد الحربي (الدولة الحديثة).
+      </p>
+      <div class="howto">
+        <div><strong>١</strong> افتح مراجعة القفل واقرأها بهدوء.</div>
+        <div><strong>٢</strong> جاوب أسئلة اللغز عشان تطلع أرقام الرمز.</div>
+        <div><strong>٣</strong> اكتب الرمز في الخانة واضغط «فتح القفل».</div>
+        <div><strong>٤</strong> لما الأربعة يتفتحوا، البوابة الرئيسية تتفتح.</div>
+      </div>
+    </section>
+
+    <section class="locks" id="locks"></section>
+
+    <section id="victory">
+      <h2>مبروك، البوابة اتفتحت</h2>
+      <p>أثبتّ إنك خبير في التاريخ المصري القديم، ونجحت تهرب من المعبد. لقبك دلوقتي: خبير في التاريخ المصري القديم.</p>
+      <p>
+        <button class="btn-ghost" id="reset" type="button">ابدأ المغامرة من جديد</button>
+      </p>
+    </section>
+
+    <details class="teacher">
+      <summary>دليل المعلم — الرموز الصحيحة (متفتحوش قدام الطلاب)</summary>
+      <table>
+        <thead>
+          <tr><th>القفل</th><th>العصر</th><th>موضوع اللغز</th><th>الرمز</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>الأول</td><td>الدولة القديمة</td><td>ملوك وبناة الأهرام والأسرة الثالثة</td><td><code>333</code></td></tr>
+          <tr><td>الثاني</td><td>الدولة الوسطى</td><td>مشاريع سنوسرت وامنمحات والقلعتين</td><td><code>231</code></td></tr>
+          <tr><td>الثالث</td><td>كفاح الهكسوس</td><td>أبطال التحرير والأسرة ١٧ والسلاح</td><td><code>371</code></td></tr>
+          <tr><td>الرابع</td><td>الدولة الحديثة</td><td>المقبرة والبعثات والملوك</td><td><code>2232</code></td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+
+  <dialog id="sheet">
+    <div class="sheet">
+      <header class="sheet-head">
+        <div>
+          <p class="era" id="sheet-era"></p>
+          <h2 id="sheet-title"></h2>
+        </div>
+        <button class="close-x" id="close-sheet" type="button" aria-label="إغلاق">×</button>
+      </header>
+      <div class="review">
+        <h3>المراجعة التاريخية</h3>
+        <ul id="sheet-review"></ul>
+      </div>
+      <div class="quiz">
+        <h3>اللغز — كوّن الرمز من الإجابات بالترتيب</h3>
+        <ol id="sheet-quiz"></ol>
+        <p class="hint-line" id="sheet-hint"></p>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const LOCKS = [
+      {
+        id: 1,
+        title: "القفل الأول",
+        era: "الدولة القديمة · عصر بناة الأهرام",
+        glyph: "🔺",
+        length: 3,
+        code: "333",
+        review: [
+          "سبب التسمية: كثرة الأهرامات الضخمة التي بناها ملوكها، وامتدت من الفيوم جنوبًا إلى الجيزة شمالًا.",
+          "زوسر: مؤسس الأسرة الثالثة، وصاحب الهرم المدرج بسقارة. غيّر أسلوب المقابر الملكية بفضل وزيره إمحوتب.",
+          "سنفرو: مؤسس الأسرة الرابعة، بنى هرمين في دهشور، وحكم ٢٤ عامًا، ولقّب بـ«الملك المحسن المحبوب».",
+          "خوفو: صاحب الهرم الأكبر بالجيزة، أحد عجائب الدنيا القديمة لضخامته وبراعة هندسته.",
+          "خفرع: صاحب الهرم الأوسط، وأمر بنحت تمثال أبو الهول.",
+          "منكاورع: صاحب الهرم الأصغر، وكان عهده أكثر حرية دينية من أبيه وجده.",
+          "أوسركاف: مؤسس الأسرة الخامسة، كبير كهنة الإله رع، وبنى معابد الشمس المكشوفة في أبو صير.",
+          "انهيار الدولة القديمة: ضعف هيبة الملوك في أواخر عهد بيبي الثاني (الأسرة السادسة)، وتفكك وحدة البلاد."
+        ],
+        quiz: [
+          "الرقم الأول: رقم الأسرة التي أسسها الملك زوسر.",
+          "الرقم الثاني: عدد الأهرامات الرئيسية الشهيرة في الجيزة (خوفو، خفرع، منكاورع).",
+          "الرقم الثالث: عدد سنوات حكم سنفرو مقسومًا على ٨ (حكم ٢٤ سنة)."
+        ],
+        hint: "الرمز من ٣ أرقام. مثال لطريقة الحساب: ٢٤ ÷ ٨ = ؟"
+      },
+      {
+        id: 2,
+        title: "القفل الثاني",
+        era: "الدولة الوسطى · عصر الرخاء الاقتصادي",
+        glyph: "🌾",
+        length: 3,
+        code: "231",
+        review: [
+          "سبب التسمية: إقامة الملوك مشاريع كثيرة لاستثمار الموارد الطبيعية والنهوض بالبلاد.",
+          "امنمحات الأول: أعاد الاستقرار، ونقل العاصمة من طيبة إلى إثت تاوي ليكون قريبًا من الدلتا والأراضي الزراعية.",
+          "سنوسرت الثالث: حفر قناة سيزوستريس لتوصيل البحر الأحمر بالنيل، وبنى قلعتي قمنة وسمنة لتأمين الحدود الجنوبية.",
+          "امنمحات الثالث: اهتم بالزراعة والري، وأنشأ سد اللاهون، وبنى مقياسًا للنيل عند الجندل الثاني، وشيّد هرمه في دهشور ومقبرة اللابرنت (قصر التيه).",
+          "انهيار الدولة الوسطى: ضعف الملوك بعد امنمحات الثالث، والصراع بين حكام الأقاليم، فوقعت البلاد فريسة للهكسوس."
+        ],
+        quiz: [
+          "الرقم الأول: كم قلعة شهيرة بناها سنوسرت الثالث على الحدود الجنوبية؟",
+          "الرقم الثاني: الترتيب العددي للملك سنوسرت المذكور في هذا العصر.",
+          "الرقم الثالث: كم سدًا رئيسيًا بناه امنمحات الثالث بالفيوم للري؟"
+        ],
+        hint: "الرمز من ٣ أرقام. دور في المراجعة على اسمي القلعتين واسم السد."
+      },
+      {
+        id: 3,
+        title: "القفل الثالث",
+        era: "كفاح الشعب المصري ضد الهكسوس",
+        glyph: "🛡️",
+        length: 3,
+        code: "371",
+        review: [
+          "الهكسوس: قبائل بدوية أتت من آسيا عن طريق فلسطين. أطلق عليهم المصريون «الملوك الرعاة» لأنهم احتلوا البلاد دون وجه حق.",
+          "عاصمتهم: أواريس (صان الحجر حاليًا بالشرقية).",
+          "أساءوا معاملة المصريين، ونهبوا المعابد، وفرضوا الضرائب، وتأثروا بالحضارة المصرية فتسمّوا بألقابهم ولبسوا ملابسهم وتكلموا بلغتهم.",
+          "حرب التحرير قادها أمراء طيبة من الأسرة ١٧.",
+          "سقنن رع: قاد المرحلة الأولى واستشهد وهو يحارب الهكسوس.",
+          "كامس: ابن سقنن رع، واصل الحرب بعد أبيه واستشهد أيضًا.",
+          "أحمس: ابن سقنن رع وأخو كامس. شجعته أمه إياح حتب، وجهّز الجيش بالعجلات الحربية، وحاصر أواريس وطرد الهكسوس خارج البلاد."
+        ],
+        quiz: [
+          "الرقم الأول: عدد أبطال أسر التحرير المذكورين (سقنن رع، كامس، أحمس).",
+          "الرقم الثاني: خذ الرقم الثاني من رقم الأسرة الطيبية التي قادت حرب التحرير (١٧).",
+          "الرقم الثالث: السلاح الجديد الذي استخدمه أحمس لحسم المعركة يُرمز له بالرقم ١. ما هذا الرقم؟"
+        ],
+        hint: "الرمز من ٣ أرقام. الأسرة ١٧: الرقم الأول ١ والرقم الثاني هو اللي تكتبه."
+      },
+      {
+        id: 4,
+        title: "القفل الرابع",
+        era: "الدولة الحديثة · عصر المجد الحربي",
+        glyph: "👑",
+        length: 4,
+        code: "2232",
+        review: [
+          "سبب التسمية: اهتمام ملوكها بتوسيع نفوذهم وتكوين أول إمبراطورية في التاريخ امتدت في آسيا وإفريقيا.",
+          "أحمس الأول: مؤسس الدولة الحديثة بعد طرد الهكسوس.",
+          "حتشبسوت: تميز عهدها بالسلام والاستقرار، وأرسلت رحلتين تجاريتين إلى بلاد بونت (الصومال حاليًا) لجلب البخور والعاج.",
+          "تحتمس الثالث: أعظم ملوك مصر في الحرب والإدارة. خاض معركة مجدو، وقسم الجيش إلى قلب وجناحين، واخترع حرب المفاجأة.",
+          "أمنحتب الرابع (أخناتون): أول ثورة دينية، ودعا لعبادة إله واحد هو آتون، وبنى عاصمة جديدة هي أخيتاتون.",
+          "توت عنخ آمون: أعاد عبادة آمون والعاصمة إلى طيبة، واكتُشفت مقبرته كاملة عام ١٩٢٢م.",
+          "رمسيس الثاني: هزم الحيثيين في معركة قادش، وعُقدت في عهده أول معاهدة سلام في التاريخ، وبنى معبد أبو سمبل.",
+          "رمسيس الثالث: المؤسس الحقيقي للأسرة العشرين، هزم شعوب البحر المتوسط برًا وبحرًا وصد خطر الليبيين."
+        ],
+        quiz: [
+          "الرقم الأول: سنة اكتشاف مقبرة توت عنخ آمون هي ١٩٢٢. خذ الرقم الأخير فقط.",
+          "الرقم الثاني: عدد البعثات التجارية التي أرسلتها حتشبسوت إلى بلاد بونت.",
+          "الرقم الثالث: رقم الملك رمسيس الذي هزم شعوب البحر المتوسط.",
+          "الرقم الرابع: رقم الملك رمسيس صاحب أول معاهدة سلام."
+        ],
+        hint: "الرمز من ٤ أرقام. فرق كويس بين رمسيس الثاني ورمسيس الثالث."
+      }
+    ];
+
+    const STORAGE_KEY = "pharaoh-escape-unlocked";
+    const locksRoot = document.getElementById("locks");
+    const sheet = document.getElementById("sheet");
+    const unlocked = loadUnlocked();
+
+    function loadUnlocked() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return new Set(Array.isArray(raw) ? raw : []);
+      } catch {
+        return new Set();
+      }
+    }
+
+    function saveUnlocked() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...unlocked]));
+    }
+
+    function renderLocks() {
+      locksRoot.innerHTML = LOCKS.map((lock) => {
+        const open = unlocked.has(lock.id);
+        return `
+          <article class="lock${open ? " open" : ""}" data-id="${lock.id}">
+            <div class="lock-top">
+              <div>
+                <p class="era">${lock.era}</p>
+                <h3>${lock.title}</h3>
+                <p class="digits">${lock.length} أرقام</p>
+              </div>
+              <div class="glyph" aria-hidden="true">${open ? "🔓" : lock.glyph}</div>
+            </div>
+            <div class="actions">
+              <button class="btn-gold" type="button" data-open="${lock.id}">اقرأ المراجعة واللغز</button>
+            </div>
+            <div class="code-row">
+              <input id="code-${lock.id}" type="text" inputmode="numeric" maxlength="${lock.length}"
+                placeholder="${"•".repeat(lock.length)}" autocomplete="off" ${open ? "disabled" : ""}
+                aria-label="رمز ${lock.title}">
+              <button class="btn-ghost" type="button" data-check="${lock.id}" ${open ? "disabled" : ""}>فتح القفل</button>
+            </div>
+            <p class="msg ${open ? "ok" : ""}" id="msg-${lock.id}">${open ? "القفل مفتوح." : ""}</p>
+          </article>
+        `;
+      }).join("");
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const count = unlocked.size;
+      document.getElementById("progress-label").textContent = `${count} من ٤ أقفال`;
+      document.getElementById("progress-fill").style.width = `${(count / 4) * 100}%`;
+      document.getElementById("victory").classList.toggle("show", count === 4);
+    }
+
+    function openSheet(id) {
+      const lock = LOCKS.find((item) => item.id === id);
+      document.getElementById("sheet-era").textContent = lock.era;
+      document.getElementById("sheet-title").textContent = lock.title;
+      document.getElementById("sheet-review").innerHTML = lock.review.map((line) => `<li>${line}</li>`).join("");
+      document.getElementById("sheet-quiz").innerHTML = lock.quiz.map((line) => `<li>${line}</li>`).join("");
+      document.getElementById("sheet-hint").textContent = lock.hint;
+      sheet.showModal();
+    }
+
+    function checkCode(id) {
+      const lock = LOCKS.find((item) => item.id === id);
+      const input = document.getElementById(`code-${id}`);
+      const msg = document.getElementById(`msg-${id}`);
+      const value = input.value.trim();
+      if (value === lock.code) {
+        unlocked.add(id);
+        saveUnlocked();
+        renderLocks();
+        return;
+      }
+      msg.textContent = value.length !== lock.length
+        ? `الرمز لازم يكون ${lock.length} أرقام.`
+        : "الرمز غلط. ارجع للمراجعة وحاول تاني.";
+      msg.className = "msg bad";
+      input.classList.remove("shake");
+      void input.offsetWidth;
+      input.classList.add("shake");
+    }
+
+    locksRoot.addEventListener("click", (event) => {
+      const openId = event.target.closest("[data-open]");
+      if (openId) openSheet(Number(openId.dataset.open));
+      const checkId = event.target.closest("[data-check]");
+      if (checkId) checkCode(Number(checkId.dataset.check));
+    });
+
+    locksRoot.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      const input = event.target.closest("input[id^='code-']");
+      if (!input) return;
+      checkCode(Number(input.id.replace("code-", "")));
+    });
+
+    document.getElementById("close-sheet").addEventListener("click", () => sheet.close());
+    sheet.addEventListener("click", (event) => {
+      if (event.target === sheet) sheet.close();
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      unlocked.clear();
+      saveUnlocked();
+      renderLocks();
+    });
+
+    renderLocks();
+  </script>
+</body>
+</html>
